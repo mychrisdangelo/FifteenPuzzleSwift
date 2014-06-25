@@ -10,11 +10,8 @@ import UIKit
 
 class PieceView: UIView {
     var pieceLabel = UILabel()
-    var boardPiece: Piece
     
     init(frame: CGRect, labelText: String?, boardPiece: Piece) {
-        self.boardPiece = boardPiece
-        
         super.init(frame: frame)
         
         if let textString = labelText {

@@ -40,11 +40,11 @@ class ViewController: UIViewController {
 
         // put squares on screen
         let empty = boardGame.empty
-        for row in 0..boardGame.rows {
-            for col in 0..boardGame.columns {
-                if !(row == empty.row && col == empty.col) {
+        for y in 0..boardGame.rows {
+            for x in 0..boardGame.columns {
+                let boardIndex = boardGame.coordinateToIndex(Coordinate(x: x, y: y))
+                if boardIndex != boardGame.empty {
                     // Draw on screen with gesture recognizer
-                    let boardIndex = boardGame.coordinateToIndex(Coordinate(col: col, row: row))
                     let theView = viewsForPieces[boardIndex]
                     boardBackground.addSubview(theView)
                     
@@ -61,7 +61,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func shuffleButtonPressed(sender : UIButton) {
-        println(boardGame.shufflePiece())
+        // println(boardGame.shufflePiece())
     }
     
     func gameWon () {
@@ -74,15 +74,16 @@ class ViewController: UIViewController {
     
     func tapButton (tap: UITapGestureRecognizer) {
         if let pieceViewTapped = tap.view as? PieceView {
-            if let toCoordinate = boardGame.movePiece(&pieceViewTapped.boardPiece) {
+            if let toCoordinate = boardGame.movePiece(pieceViewTapped.tag) {
                 movePieceView(pieceViewTapped, toCoordinate: toCoordinate)
+                pieceViewTapped.tag = boardGame.coordinateToIndex(toCoordinate)
             }
         }
     }
     
     func movePieceView (pieceView: PieceView, toCoordinate: Coordinate) {
         // animate square moving to new location
-        var newFrame = getFrameForPiece(toCoordinate.col, row: toCoordinate.row)
+        var newFrame = getFrameForPiece(toCoordinate.x, row: toCoordinate.y)
         UIView.animateWithDuration(0.25) {
             pieceView.frame = newFrame;
         }
@@ -103,19 +104,18 @@ class ViewController: UIViewController {
     }
     
     func generateViewsForAllPieces () -> PieceView[] {
-        var peiceViews = Array<PieceView>()
+        var peiceViews = PieceView[]()
         
-        for row in 0..boardGame.rows {
-            for col in 0..boardGame.columns {
-                if col == boardGame.columns - 1 && row == boardGame.rows - 1 {
-                    // last row, we're done
-                    break
-                }
-                
-                let boardIndex = boardGame.coordinateToIndex(Coordinate(col: col, row: row))
+        for y in 0..boardGame.rows {
+            for x in 0..boardGame.columns {
+                let boardIndex = boardGame.coordinateToIndex(Coordinate(x: x, y: y))
                 let piece = boardGame.pieces[boardIndex]
                 let labelText = piece.pieceName
-                let pieceView = PieceView(frame: getFrameForPiece(col, row: row), labelText: labelText, boardPiece: piece)
+                let pieceView = PieceView(frame: getFrameForPiece(x, row: y), labelText: labelText, boardPiece: piece)
+                pieceView.tag = boardIndex
+                
+                println(piece.pieceName)
+                println(pieceView)
                 
                 peiceViews.append(pieceView)
             }
