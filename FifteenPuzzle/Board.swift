@@ -72,6 +72,10 @@ class Board: Printable {
         }
     }
     
+    func coordinateToIndex (coordinate: Coordinate) -> Int {
+        return coordinate.row * rows + coordinate.col
+    }
+    
     func availableMoves (coordinate: Coordinate) -> Coordinate[] {
         var checkMovements = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         let maxX = self.columns - 1

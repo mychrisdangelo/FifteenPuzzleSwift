@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     
     init(coder aDecoder: NSCoder!)  {
         super.init(coder: aDecoder)
-        viewsForPieces = generateViewsForAllPieces(boardGame)
+        viewsForPieces = generateViewsForAllPieces()
     }
     
     var sizeOfSquare: (width: CGFloat, height: CGFloat) {
@@ -44,7 +44,8 @@ class ViewController: UIViewController {
             for col in 0..boardGame.columns {
                 if !(row == empty.row && col == empty.col) {
                     // Draw on screen with gesture recognizer
-                    let theView = viewsForPieces[row * boardGame.rows + col]
+                    let boardIndex = boardGame.coordinateToIndex(Coordinate(col: col, row: row))
+                    let theView = viewsForPieces[boardIndex]
                     boardBackground.addSubview(theView)
                     
                     theView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tapButton:"))
@@ -97,17 +98,18 @@ class ViewController: UIViewController {
         return CGRectMake(x, y, width, height)
     }
     
-    func generateViewsForAllPieces (board: Board) -> PieceView[] {
+    func generateViewsForAllPieces () -> PieceView[] {
         var peiceViews = Array<PieceView>()
         
-        for row in 0..board.rows {
-            for col in 0..board.columns {
-                if col == board.columns - 1 && row == board.rows - 1 {
+        for row in 0..boardGame.rows {
+            for col in 0..boardGame.columns {
+                if col == boardGame.columns - 1 && row == boardGame.rows - 1 {
                     // last row, we're done
                     break
                 }
                 
-                let piece = boardGame.pieces[row * board.rows + col]
+                let boardIndex = boardGame.coordinateToIndex(Coordinate(col: col, row: row))
+                let piece = boardGame.pieces[boardIndex]
                 let labelText = piece.pieceName
                 let pieceView = PieceView(frame: getFrameForPiece(col, row: row), labelText: labelText, boardPiece: piece)
                 
