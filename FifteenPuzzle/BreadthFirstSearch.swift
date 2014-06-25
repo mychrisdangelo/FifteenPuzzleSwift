@@ -8,55 +8,83 @@
 
 import Foundation
 
-func bfs (startState: Board, goalState: Board, successorFunction: (board: Board) -> Board[]) -> Int[]? {
+class BFSNode: Printable {
+    var board: Board
+    var lastMoveIndex: Int?
     
-    var openList: Board[] = [startState]
-    var closedList: Board[] = []
-    var currentNode: Board?
-    var daughters: Array<Board>?[] = []
+    init (board: Board, lastMoveIndex: Int?) {
+        self.board = board
+        self.lastMoveIndex = lastMoveIndex
+    }
+    
+    func isInList (list: BFSNode[]) -> Bool {
+        for eachNode in list {
+            let thisBoard = eachNode.board
+            if thisBoard == board {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    var description: String {
+    return "(board = \(board), lastMoveIndex = \(lastMoveIndex))"
+    }
+}
+
+func bfs (startState: Board, goalState: Board, successorFunction: (board: Board) -> BFSNode[]) -> Int[]? {
+    var openList: BFSNode[] = [BFSNode(board: startState, lastMoveIndex: nil)]
+    var closedList: BFSNode[] = []
+    var currentNode: BFSNode?
+    var daughters: BFSNode[] = []
+    var winningPath: Int[]?
     
     // begin the loop
     while true {
         if openList.isEmpty {
             // if open is empty and we haven't found a goal then failure
+            println("No path found")
             return nil
         }
         
         let currentNode = openList.removeAtIndex(0) // get the next node in the open list
         closedList.append(currentNode) // add that node to the "looked at" list
         
-        if currentNode == goalState {
+        if currentNode.board == goalState {
             // we've found the goal state
-            println("FOUND GOAL!")
+            
+            println("Found goal in \(closedList.count) moves")
             break
         }
         
-        // get all possibilities and then filter the daughters that have already been
+        // get all possibilities and then filter out the daughters that have already been
         // examined or are planning to be examined
-        var daughters = successorFunction(board: currentNode)
-        daughters.filter {
-            (openList as NSArray).containsObject($0)
+        var daughters = successorFunction(board: currentNode.board)
+        
+        daughters = daughters.filter {
+            !$0.isInList(openList)
         }
         
-        daughters.filter {
-            (openList as NSArray).containsObject($0)
+        daughters = daughters.filter {
+            !$0.isInList(closedList)
         }
         
         openList += daughters // append new daughters to the end of open list
     }
     
-    return nil
+    return winningPath
 }
 
-func successorFunction (board: Board) -> Board[] {
+func successorFunction (board: Board) -> BFSNode[] {
     var indexThatCanMove = board.indexesThatCanMove()
-    var childBoards = Board[]()
+    var childBoardsWithMoves = BFSNode[]()
     
     for index in indexThatCanMove {
         let childBoard = Board(board: board) // make copy of board
         childBoard.movePiece(index) // mutates board
-        childBoards.append(childBoard)
+        childBoardsWithMoves.append(BFSNode(board: childBoard, lastMoveIndex: index))
     }
     
-    return childBoards
+    return childBoardsWithMoves
 }
