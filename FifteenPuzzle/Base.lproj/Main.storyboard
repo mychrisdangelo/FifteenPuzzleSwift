@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="StU-yF-64o">
-                                <rect key="frame" x="216" y="430" width="48" height="30"/>
+                                <rect key="frame" x="412" y="430" width="48" height="30"/>
                                 <state key="normal" title="Shuffle">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -25,11 +25,22 @@
                                     <action selector="shuffleButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="aWN-55-FM3"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2h-a4-FLa">
+                                <rect key="frame" x="20" y="430" width="38" height="30"/>
+                                <state key="normal" title="Solve">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="solveButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="PYL-Xf-e5r"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="StU-yF-64o" secondAttribute="centerY" constant="-205" id="KvA-FX-ZZq"/>
-                            <constraint firstAttribute="centerX" secondItem="StU-yF-64o" secondAttribute="centerX" id="cfT-Um-Ihz"/>
+                            <constraint firstItem="C2h-a4-FLa" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" id="Mw4-hh-xUb"/>
+                            <constraint firstAttribute="trailing" secondItem="StU-yF-64o" secondAttribute="trailing" constant="20" id="QvK-Yb-vVw"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="C2h-a4-FLa" secondAttribute="bottom" constant="20" id="xt1-Yw-Mic"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="StU-yF-64o" secondAttribute="bottom" constant="20" id="zpf-XJ-qST"/>
                         </constraints>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>

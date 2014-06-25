@@ -51,6 +51,7 @@ class Piece: Printable {
     if isSame {
         for i in 0..lhs.pieces.count {
             if lhs.pieces[i] != rhs.pieces[i] {
+                isSame = false
                 break
             }
         }
@@ -88,7 +89,7 @@ class Board: Printable {
         columns = board.columns
         empty = board.empty
         winningLocations = board.winningLocations
-        board.pieces = board.pieces.copy()
+        pieces = board.pieces.copy()
     }
     
     var description: String {

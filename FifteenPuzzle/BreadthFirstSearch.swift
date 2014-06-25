@@ -8,21 +8,11 @@
 
 import Foundation
 
-/*
- * 1. Put s0 (node we're trying) into open list
- * 2. If open list is empty exit with failure
- * 3. Remove first state on open and call it 'n'
- * 4. Add 'n' to closed
- * 5. If 'n' is in Sg (goal state) exit with success
- * 6. Let s(n) be all the dstates derived from n by applying all operators
- * 7. Add all nodes in s(n) - {(union open closed)} to the end of open
- * 8. got to step 2
- */
-
-func bfs (s0: Array<Board>, sg: Array<Board>, sons: Array<Board>) -> Int[]? {
-    var openList: Array<Board>?[] = [s0, nil]
-    var closedList: Array<Board>?[] = []
-    var n: Array<Board>? = nil
+func bfs (startState: Board, goalState: Board, successorFunction: (board: Board) -> Board[]) -> Int[]? {
+    
+    var openList: Board[] = [startState]
+    var closedList: Board[] = []
+    var currentNode: Board?
     var daughters: Array<Board>?[] = []
     
     // begin the loop
@@ -32,11 +22,41 @@ func bfs (s0: Array<Board>, sg: Array<Board>, sons: Array<Board>) -> Int[]? {
             return nil
         }
         
-        n = openList.removeLast() // get the next node in the open list
-        closedList.append(n) // add that node to the "looked at" list
+        let currentNode = openList.removeAtIndex(0) // get the next node in the open list
+        closedList.append(currentNode) // add that node to the "looked at" list
         
+        if currentNode == goalState {
+            // we've found the goal state
+            println("FOUND GOAL!")
+            break
+        }
         
+        // get all possibilities and then filter the daughters that have already been
+        // examined or are planning to be examined
+        var daughters = successorFunction(board: currentNode)
+        daughters.filter {
+            (openList as NSArray).containsObject($0)
+        }
+        
+        daughters.filter {
+            (openList as NSArray).containsObject($0)
+        }
+        
+        openList += daughters // append new daughters to the end of open list
     }
     
+    return nil
+}
+
+func successorFunction (board: Board) -> Board[] {
+    var indexThatCanMove = board.indexesThatCanMove()
+    var childBoards = Board[]()
     
+    for index in indexThatCanMove {
+        let childBoard = Board(board: board) // make copy of board
+        childBoard.movePiece(index) // mutates board
+        childBoards.append(childBoard)
+    }
+    
+    return childBoards
 }
