@@ -22,6 +22,10 @@ struct Coordinate: Printable {
     }
 }
 
+@infix func == (lhs: Coordinate, rhs: Coordinate) -> Bool {
+    return (lhs.row == rhs.row) && (lhs.col == rhs.col)
+}
+
 struct Piece: Printable {
     let pieceName: String
     let pieceNumber: Int
@@ -64,7 +68,6 @@ class Board: Printable {
                 }
                 
                 pieces.append(Piece(pieceName: "\(i)", pieceNumber: i++, row: row, col: col))
-                println(pieces)
             }
         }
     }
@@ -82,6 +85,37 @@ class Board: Printable {
     
     var description: String {
     return "Board = \(pieces)\n"
+    }
+    
+    func movePiece (inout piece:Piece) -> Coordinate? {
+        var possibleDestinations = availableMoves(piece.coordinate)
+        var destinationCoordinate: Coordinate?
+        
+        for eachCoordinate in possibleDestinations {
+            if eachCoordinate == self.empty {
+                // swap the piece with the empty
+                let oldCoordinate = piece.coordinate
+                destinationCoordinate = self.empty
+                
+                // store it in the array and in the coordinate
+                piece.coordinate = self.empty
+                self.empty = oldCoordinate
+                
+                if piece.coordinate.row == piece.winningCoordinate.row && piece.coordinate.col == piece.winningCoordinate.col {
+                    self.winningLocations++
+                } else {
+                    self.winningLocations--
+                }
+                
+                if self.winningLocations == self.rows * self.columns - 1 {
+                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: gameWonNotification, object: nil))
+                }
+                
+                break;
+            }
+        }
+        
+        return destinationCoordinate
     }
     
 }

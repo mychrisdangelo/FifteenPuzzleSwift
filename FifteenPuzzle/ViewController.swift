@@ -32,9 +32,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-                println(boardGame)
         
         // put background square on board
         boardBackground.backgroundColor = UIColor.yellowColor()
@@ -51,17 +48,39 @@ class ViewController: UIViewController {
                     boardBackground.addSubview(theView)
                     
                     theView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tapButton:"))
-                    println(boardGame.pieces[col * row])
                 }
             }
         }
         
-        
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "gameWon", name: boardGame.gameWonNotification, object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func gameWon () {
+        let alert = UIAlertView()
+        alert.title = "You Won!"
+        alert.message = "You won the game"
+        alert.addButtonWithTitle("OK")
+        alert.show()
     }
     
     func tapButton (tap: UITapGestureRecognizer) {
-        
+        if let pieceViewTapped = tap.view as? PieceView {
+            if let toCoordinate = boardGame.movePiece(&pieceViewTapped.boardPiece) {
+                movePieceView(pieceViewTapped, toCoordinate: toCoordinate)
+            }
+        }
+    }
+    
+    func movePieceView (pieceView: PieceView, toCoordinate: Coordinate) {
+        // animate square moving to new location
+        var newFrame = getFrameForPiece(toCoordinate.col, row: toCoordinate.row)
+        UIView.animateWithDuration(0.25) {
+            pieceView.frame = newFrame;
+        }
     }
     
     func getOriginForPiece (column: Int, row: Int) -> (CGFloat, CGFloat) {
@@ -88,14 +107,8 @@ class ViewController: UIViewController {
                     break
                 }
                 
-                println("board = \(board)")
-                println("board pieces = \(board.pieces)")
-                
                 let piece = boardGame.pieces[row * board.rows + col]
                 let labelText = piece.pieceName
-                 println("piece = \(piece)")
-                println("piecename = \(piece.pieceName)")
-                println(labelText)
                 let pieceView = PieceView(frame: getFrameForPiece(col, row: row), labelText: labelText, boardPiece: piece)
                 
                 peiceViews.append(pieceView)
