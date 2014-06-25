@@ -79,28 +79,27 @@ class Board: Printable {
         return Coordinate(x: x, y: y)
     }
     
-//    func piecesThatCanMove () -> Piece[] {
-//        let coordinatesOfPiecesThatCanMove = availableMoves(empty)
-//        var piecesArray: Piece[] = []
-//        
-//        for eachCoordinate in coordinatesOfPiecesThatCanMove {
-//            let index = coordinateToIndex(eachCoordinate)
-//            piecesArray.append(pieces[index])
-//        }
-//        
-//        assert(piecesArray.count >= 2)
-//        
-//        return piecesArray
-//    }
-//    
-//    func shufflePiece () -> Piece? {
-//        let pieces = piecesThatCanMove()
-//        let randomPieceChoice = Int(rand()) % pieces.count
-//        println(randomPieceChoice)
-//        
-//        return pieces[randomPieceChoice]
-//    }
-//    
+    func indexesThatCanMove () -> Int[] {
+        let coordinatesOfPiecesThatCanMove = availableMoves(empty)
+        var indexesArray = Int[]()
+        
+        for eachCoordinate in coordinatesOfPiecesThatCanMove {
+            let index = coordinateToIndex(eachCoordinate)
+            indexesArray.append(index)
+        }
+        
+        assert(indexesArray.count >= 2)
+        
+        return indexesArray
+    }
+    
+    func shufflePiece () -> Int {
+        let indexes = indexesThatCanMove()
+        let randomInRange = Int(rand()) % indexes.count
+    
+        return indexes[randomInRange]
+    }
+    
     func availableMoves (index: Int) -> Coordinate[] {
         var checkMovements = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         let maxX = self.columns - 1
@@ -109,22 +108,10 @@ class Board: Printable {
         
         var positions = checkMovements.map( { Coordinate(x: currentPosition.x + $0.0, y: currentPosition.y + $0.1) } )
             .filter( { $0.x >= 0 && $0.y >= 0 && $0.x <= maxX && $0.y <= maxY })
-        println(positions)
         
         return positions;
     }
-//
-//    var description: String {
-//    return "Board = \(pieces)\n"
-//    }
-//    
-//    func swapPieces (inout a: Piece, inout _ b: Piece) {
-//        let tmpCoord = a.coordinate
-//        
-//        a.coordinate = Coordinate(col: b.coordinate.col, row: b.coordinate.row)
-//        b.coordinate = Coordinate(col: tmpCoord.col, row: tmpCoord.row)
-//    }
-//    
+  
     func swapPieces(inout a: Piece, inout _ b: Piece) {
         var tmp = a
         a = b
@@ -158,8 +145,6 @@ class Board: Printable {
                 break;
             }
         }
-        
-        println("Pieces after move = \(pieces)")
         
         return destinationCoordinate
     }

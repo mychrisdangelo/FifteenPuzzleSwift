@@ -61,7 +61,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func shuffleButtonPressed(sender : UIButton) {
-        // println(boardGame.shufflePiece())
+        let indexOfEmpty = boardGame.indexToCoordinate(boardGame.empty)
+        let indexOfPieceToShuffle = boardGame.shufflePiece()
+        
+        movePieceViewWithIndex(indexOfPieceToShuffle)
     }
     
     func gameWon () {
@@ -72,12 +75,28 @@ class ViewController: UIViewController {
         alert.show()
     }
     
+    func swapPeiceViews(inout a: PieceView, inout _ b: PieceView) {
+        var tmp = a
+        a = b
+        b = tmp
+    }
+    
+    func movePieceViewWithIndex (index: Int) {
+        let pieceView = viewsForPieces[index]
+        
+        if let toCoordinate = boardGame.movePiece(index) {
+            movePieceView(pieceView, toCoordinate: toCoordinate)
+            let destinationIndex = boardGame.coordinateToIndex(toCoordinate)
+            pieceView.tag = destinationIndex
+            
+            swapPeiceViews(&viewsForPieces[destinationIndex], &viewsForPieces[index])
+        }
+    }
+    
     func tapButton (tap: UITapGestureRecognizer) {
         if let pieceViewTapped = tap.view as? PieceView {
-            if let toCoordinate = boardGame.movePiece(pieceViewTapped.tag) {
-                movePieceView(pieceViewTapped, toCoordinate: toCoordinate)
-                pieceViewTapped.tag = boardGame.coordinateToIndex(toCoordinate)
-            }
+            let index = pieceViewTapped.tag
+            movePieceViewWithIndex(index)
         }
     }
     
@@ -114,9 +133,7 @@ class ViewController: UIViewController {
                 let pieceView = PieceView(frame: getFrameForPiece(x, row: y), labelText: labelText, boardPiece: piece)
                 pieceView.tag = boardIndex
                 
-                println(piece.pieceName)
-                println(pieceView)
-                
+
                 peiceViews.append(pieceView)
             }
         }
