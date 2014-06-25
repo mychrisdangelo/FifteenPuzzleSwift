@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     let frameBuffer: CGFloat = 10.0
     let pieceBuffer: CGFloat = 2.0
     var viewsForPieces: PieceView[] = []
+    var shuffling = false
     
     init(coder aDecoder: NSCoder!)  {
         super.init(coder: aDecoder)
@@ -61,22 +62,23 @@ class ViewController: UIViewController {
     }
     
     @IBAction func shuffleButtonPressed(sender : UIButton) {
-//        for _ in 0..1 {
-//            let indexOfEmpty = boardGame.indexToCoordinate(boardGame.empty)
-//            let indexOfPieceToShuffle = boardGame.shufflePiece()
-//            
-//            movePieceViewWithIndex(indexOfPieceToShuffle)
-//        }
+        shuffling = true
         
-        println(boardGame.shuffleList(4))
+        if let shuffleList = boardGame.shuffleList(4) {
+            for eachIndex in shuffleList {
+                movePieceViewWithIndex(eachIndex)
+            }
+        }
     }
     
     func gameWon () {
-//        let alert = UIAlertView()
-//        alert.title = "You Won!"
-//        alert.message = "You won the game"
-//        alert.addButtonWithTitle("OK")
-//        alert.show()
+        if !shuffling {
+            let alert = UIAlertView()
+            alert.title = "You Won!"
+            alert.message = "You won the game"
+            alert.addButtonWithTitle("OK")
+            alert.show()
+        }
     }
     
     func swapPieceViews(inout a: PieceView, inout _ b: PieceView) {
