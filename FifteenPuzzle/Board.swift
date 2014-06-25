@@ -63,6 +63,16 @@ class Board: Printable {
         }
     }
     
+    convenience init (board: Board) {
+        self.init(rows: board.rows, columns: board.columns);
+        
+        rows = board.rows
+        columns = board.columns
+        empty = board.empty
+        winningLocations = board.winningLocations
+        board.pieces = board.pieces.copy()
+    }
+    
     var description: String {
     return "Pieces \(pieces)"
     }
@@ -100,6 +110,20 @@ class Board: Printable {
         return indexes[randomInRange]
     }
     
+    func shuffleList (moves: Int) -> Int[]? {
+        var board = Board(board: self)
+        var indexesOfPiecesToMove = Array<Int>()
+        
+        for _ in 0..moves {
+            let indexOfPieceToMove = board.shufflePiece()
+            board.movePiece(indexOfPieceToMove)
+            
+            indexesOfPiecesToMove.append(indexOfPieceToMove)
+        }
+        
+        return indexesOfPiecesToMove
+    }
+    
     func availableMoves (index: Int) -> Coordinate[] {
         var checkMovements = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         let maxX = self.columns - 1
@@ -112,7 +136,7 @@ class Board: Printable {
         return positions;
     }
   
-    func swapPieces(inout a: Piece, inout _ b: Piece) {
+    func swapPieces (inout a: Piece, inout _ b: Piece) {
         var tmp = a
         a = b
         b = tmp
@@ -133,12 +157,12 @@ class Board: Printable {
                 empty = oldIndex
                 
                 if pieces[destinationIndex].winningIndex == destinationIndex {
-                    self.winningLocations++
+                    winningLocations++
                 } else {
-                    self.winningLocations--
+                    winningLocations--
                 }
                 
-                if self.winningLocations == self.rows * self.columns - 1 {
+                if winningLocations == rows * columns - 1 {
                     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: gameWonNotification, object: nil))
                 }
                 

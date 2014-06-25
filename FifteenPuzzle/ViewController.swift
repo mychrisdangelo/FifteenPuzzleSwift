@@ -61,21 +61,25 @@ class ViewController: UIViewController {
     }
     
     @IBAction func shuffleButtonPressed(sender : UIButton) {
-        let indexOfEmpty = boardGame.indexToCoordinate(boardGame.empty)
-        let indexOfPieceToShuffle = boardGame.shufflePiece()
+//        for _ in 0..1 {
+//            let indexOfEmpty = boardGame.indexToCoordinate(boardGame.empty)
+//            let indexOfPieceToShuffle = boardGame.shufflePiece()
+//            
+//            movePieceViewWithIndex(indexOfPieceToShuffle)
+//        }
         
-        movePieceViewWithIndex(indexOfPieceToShuffle)
+        println(boardGame.shuffleList(4))
     }
     
     func gameWon () {
-        let alert = UIAlertView()
-        alert.title = "You Won!"
-        alert.message = "You won the game"
-        alert.addButtonWithTitle("OK")
-        alert.show()
+//        let alert = UIAlertView()
+//        alert.title = "You Won!"
+//        alert.message = "You won the game"
+//        alert.addButtonWithTitle("OK")
+//        alert.show()
     }
     
-    func swapPeiceViews(inout a: PieceView, inout _ b: PieceView) {
+    func swapPieceViews(inout a: PieceView, inout _ b: PieceView) {
         var tmp = a
         a = b
         b = tmp
@@ -89,7 +93,7 @@ class ViewController: UIViewController {
             let destinationIndex = boardGame.coordinateToIndex(toCoordinate)
             pieceView.tag = destinationIndex
             
-            swapPeiceViews(&viewsForPieces[destinationIndex], &viewsForPieces[index])
+            swapPieceViews(&viewsForPieces[destinationIndex], &viewsForPieces[index])
         }
     }
     
