@@ -14,6 +14,7 @@
 		4024982B195A460800BD7854 /* FifteenPuzzleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4024982A195A460800BD7854 /* FifteenPuzzleTests.swift */; };
 		40249835195A465600BD7854 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40249834195A465600BD7854 /* Board.swift */; };
 		40249839195A4C1400BD7854 /* PieceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40249838195A4C1400BD7854 /* PieceView.swift */; };
+		4065795E195B4DF2006F3F1D /* BreadthFirstSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4065795D195B4DF2006F3F1D /* BreadthFirstSearch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		4024982A195A460800BD7854 /* FifteenPuzzleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FifteenPuzzleTests.swift; sourceTree = "<group>"; };
 		40249834195A465600BD7854 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		40249838195A4C1400BD7854 /* PieceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
+		4065795D195B4DF2006F3F1D /* BreadthFirstSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadthFirstSearch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 		40249814195A460800BD7854 /* FifteenPuzzle */ = {
 			isa = PBXGroup;
 			children = (
+				4065795D195B4DF2006F3F1D /* BreadthFirstSearch.swift */,
 				40249817195A460800BD7854 /* AppDelegate.swift */,
 				40249838195A4C1400BD7854 /* PieceView.swift */,
 				40249819195A460800BD7854 /* ViewController.swift */,
@@ -216,6 +219,7 @@
 			files = (
 				4024981A195A460800BD7854 /* ViewController.swift in Sources */,
 				40249818195A460800BD7854 /* AppDelegate.swift in Sources */,
+				4065795E195B4DF2006F3F1D /* BreadthFirstSearch.swift in Sources */,
 				40249835195A465600BD7854 /* Board.swift in Sources */,
 				40249839195A4C1400BD7854 /* PieceView.swift in Sources */,
 			);

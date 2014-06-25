@@ -8,6 +8,10 @@
 
 import Foundation
 
+@infix func == (lhs: Coordinate, rhs: Coordinate) -> Bool {
+    return (lhs.y == rhs.y) && (lhs.x == rhs.x)
+}
+
 struct Coordinate: Printable {
     var x: Int
     var y: Int
@@ -22,8 +26,8 @@ struct Coordinate: Printable {
     }
 }
 
-@infix func == (lhs: Coordinate, rhs: Coordinate) -> Bool {
-    return (lhs.y == rhs.y) && (lhs.x == rhs.x)
+@infix func != (lhs: Piece, rhs: Piece) -> Bool {
+    return !((lhs.pieceName == rhs.pieceName) && (lhs.winningIndex == rhs.winningIndex))
 }
 
 class Piece: Printable {
@@ -39,6 +43,20 @@ class Piece: Printable {
     var description: String {
     return "Piece (name: \(pieceName))\n"
     }
+}
+
+@infix func == (lhs: Board, rhs: Board) -> Bool {
+    var isSame = lhs.pieces.count == rhs.pieces.count
+    
+    if isSame {
+        for i in 0..lhs.pieces.count {
+            if lhs.pieces[i] != rhs.pieces[i] {
+                break
+            }
+        }
+    }
+    
+    return isSame
 }
 
 class Board: Printable {
