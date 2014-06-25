@@ -9,10 +9,17 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    var boardBackground = UIView(frame: CGRectMake(0, 0, 300, 300))
                             
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        // put background square on board
+        boardBackground.backgroundColor = UIColor.yellowColor()
+        self.view.addSubview(boardBackground)
+        boardBackground.center = self.view.center;
     }
 
     override func didReceiveMemoryWarning() {
