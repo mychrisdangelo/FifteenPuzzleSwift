@@ -76,6 +76,28 @@ class Board: Printable {
         return coordinate.row * rows + coordinate.col
     }
     
+    func piecesThatCanMove () -> Piece[] {
+        let coordinatesOfPiecesThatCanMove = availableMoves(empty)
+        var piecesArray: Piece[] = []
+        
+        for eachCoordinate in coordinatesOfPiecesThatCanMove {
+            let index = coordinateToIndex(eachCoordinate)
+            piecesArray.append(pieces[index])
+        }
+        
+        assert(piecesArray.count >= 2)
+        
+        return piecesArray
+    }
+    
+    func shufflePiece () -> Piece? {
+        let pieces = piecesThatCanMove()
+        let randomPieceChoice = Int(rand()) % pieces.count
+        println(randomPieceChoice)
+        
+        return pieces[randomPieceChoice]
+    }
+    
     func availableMoves (coordinate: Coordinate) -> Coordinate[] {
         var checkMovements = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         let maxX = self.columns - 1

@@ -60,6 +60,10 @@ class ViewController: UIViewController {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    @IBAction func shuffleButtonPressed(sender : UIButton) {
+        println(boardGame.shufflePiece())
+    }
+    
     func gameWon () {
         let alert = UIAlertView()
         alert.title = "You Won!"
