@@ -37,11 +37,11 @@ struct Piece: Printable {
     }
     
     var description: String {
-    return "Piece (name: \(pieceName), coord: \(coordinate))"
+    return "Piece (name: \(pieceName), coord: \(coordinate))\n"
     }
 }
 
-class Board {
+class Board: Printable {
     var pieces = Array<Piece>()
     let columns: Int
     let rows: Int
@@ -56,9 +56,15 @@ class Board {
         self.winningLocations = self.rows * self.columns - 1
         
         var i = 0
-        for column in 0..self.columns {
-            for row in 0..self.rows {
-                pieces.append(Piece(pieceName: "\(i)", pieceNumber: i++, row: row, col: column))
+        for row in 0..rows {
+            for col in 0..columns {
+                if col == columns - 1 && row == rows - 1 {
+                    // last row, we're done
+                    break
+                }
+                
+                pieces.append(Piece(pieceName: "\(i)", pieceNumber: i++, row: row, col: col))
+                println(pieces)
             }
         }
     }
@@ -72,6 +78,10 @@ class Board {
             .filter( { $0.row >= 0 && $0.col >= 0 && $0.row <= maxY && $0.col <= maxX })
         
         return positions;
+    }
+    
+    var description: String {
+    return "Board = \(pieces)\n"
     }
     
 }
