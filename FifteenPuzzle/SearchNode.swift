@@ -16,12 +16,7 @@ class SearchNode: Printable {
     var heuristicValue: Double?
     var costValue: Double?
     
-    init (board: Board, lastMoveIndex: Int?) {
-        self.board = board
-        self.lastMoveIndex = lastMoveIndex
-    }
-    
-    init (board: Board, lastMoveIndex: Int?, heuristicValue: Double, costValue: Double = 0) {
+    init (board: Board, lastMoveIndex: Int?, heuristicValue: Double = 0, costValue: Double = 0) {
         self.board = board
         self.lastMoveIndex = lastMoveIndex
         self.heuristicValue = heuristicValue
@@ -44,19 +39,26 @@ class SearchNode: Printable {
     }
 }
 
-typealias SuccessorFunctionType = (board: Board) -> SearchNode[]
+typealias SuccessorFunctionType = (currentNode: SearchNode) -> SearchNode[]
 
-func successorFunction (board: Board) -> SearchNode[] {
-    var indexThatCanMove = board.indexesThatCanMove()
+func successorFunction (currentNode: SearchNode) -> SearchNode[] {
+    var indexThatCanMove = currentNode.board.indexesThatCanMove()
     var childBoardsWithMoves = SearchNode[]()
     
     for index in indexThatCanMove {
-        let childBoard = Board(board: board) // make copy of board
+        let childBoard = Board(board: currentNode.board) // make copy of board
         childBoard.movePiece(index) // mutates board
-        childBoardsWithMoves.append(SearchNode(board: childBoard, lastMoveIndex: index))
+        let costOfMove = cost(currentNode.board, childBoard)
+        
+        childBoardsWithMoves.append(SearchNode(board: childBoard, lastMoveIndex: index, costValue: costOfMove))
     }
     
     return childBoardsWithMoves
+}
+
+func cost (currentState: Board, nextState: Board) -> Double {
+    // can only move one square in Fifteen Puzzle. Every move is equal.
+    return 1
 }
 
 func traceSolution (goalNode: SearchNode, startState: Board, inout winningMoves: Int[]) {

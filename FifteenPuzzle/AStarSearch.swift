@@ -66,7 +66,7 @@ func aStar (startState: Board, goalState: Board, heuristicFunction: HeuristicFun
 
         // get all possibilities and then filter out the daughters that have already been
         // examined or are planning to be examined
-        var daughters = successorFunction(board: currentNode.board)
+        var daughters = successorFunction(currentNode: currentNode)
         
         daughters = daughters.filter {
             !$0.isInList(openList)
@@ -75,6 +75,7 @@ func aStar (startState: Board, goalState: Board, heuristicFunction: HeuristicFun
         daughters = daughters.filter {
             !$0.isInList(closedList)
         }
+        
         
     }
 }
