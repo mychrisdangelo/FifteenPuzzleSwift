@@ -38,71 +38,49 @@ import Foundation
 //;;;  5. Go to 2
 //;;;
 
-func aStar (startState: Board, goalState: Board, heuristicFunction: (theState: Board) -> Double) {
+func aStar (startState: Board, goalState: Board, heuristicFunction: HeuristicFunctionType, successorFunction: SuccessorFunctionType) {
     var heuristicValue = heuristicFunction(theState: startState)
-    var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil, heuristicValue: heuristicValue)]
+    var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil, heuristicValue: heuristicValue)] // TODO: perhaps this should be sorting whenever get is called
     var closedList: SearchNode[] = []
-    var currentNode: SearchNode?
     var daughters: SearchNode[] = []
     var winningPath: Int[] = []
-}
+    
+    // begin the loop
+    while true {
+        if openList.isEmpty {
+            // if open is empty and we haven't found a goal then failure
+            println("Error: No path found")
+            break
+        }
+        
+        // remove from the open list the node with the minimal f-hat value (g-hat + h-hat)
+        // this node is at the front of the list because this list is being sorted by f-hat
+        let currentNode = openList.removeAtIndex(0)
+        closedList.append(currentNode)
+        
+        if currentNode.board == goalState {
+            // we've found the goal state
+            traceSolution(currentNode, startState, &winningPath)
+            break
+        }
 
-func straightLineDistance (index: Int, theState: Board) -> Double {
-    let coordinateOfIndex = theState.indexToCoordinate(index)
-    let coordinateOfGoal = theState.indexToCoordinate(theState.pieces[index].winningIndex)
-    
-    let xDistance = abs(coordinateOfIndex.x - coordinateOfGoal.x)
-    let yDistance = abs(coordinateOfGoal.y - coordinateOfGoal.y)
-    
-    let squaredX = Double(xDistance * xDistance)
-    let squaredY = Double(yDistance * yDistance)
-    
-    return sqrt(squaredX + squaredY)
-}
-
-func straightLightDistanceHeuristic (theState: Board) -> Double {
-    var straightLineDistances = Double[]()
-    var sum: Double = 0
-    
-    for (index, _) in enumerate(theState.pieces) {
-        let sld = straightLineDistance(index, theState)
-        sum += sld
+        // get all possibilities and then filter out the daughters that have already been
+        // examined or are planning to be examined
+        var daughters = successorFunction(board: currentNode.board)
+        
+        daughters = daughters.filter {
+            !$0.isInList(openList)
+        }
+        
+        daughters = daughters.filter {
+            !$0.isInList(closedList)
+        }
+        
     }
-    
-    return sum
 }
 
-//;;;
-//;;; Manhattan distance heurisitic
-//;;;
-//
-//(defun manhattan-heuristic (thestate goalstate)
-//"iterate through each positive number 1-15 and find their manhattan distance. add them up"
-//(reduce #'+ (mapcar #'(lambda (n) (manhattan-dist n thestate goalstate))
-//'(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))))
-//
-//(defun manhattan-dist (tile thestate goalstate)
-//"find the manhattan distance"
-//(let ((f-coord (coordinate thestate tile))
-//(t-coord (coordinate goalstate tile)))
-//(+ (abs (- (row f-coord)
-//(row t-coord)))
-//(abs (- (col f-coord)
-//(col t-coord))))))
-//
-//(defun row (coord)
-//(first coord))
-//
-//(defun col (coord)
-//(second coord))
-//
-//(defun coordinate (thestate tile)
-//(do ((r 0 (1+ r)))
-//((= r 4) nil)
-//(do ((c 0 (1+ c)))
-//((= c 4) nil)
-//(if (equal (nth c (nth r thestate)) tile)
-//(return-from coordinate (list r c))))))
+//func update (daughters: SearchNode[], openList: SearchNode[], heuristicFunction
+
 
 
 

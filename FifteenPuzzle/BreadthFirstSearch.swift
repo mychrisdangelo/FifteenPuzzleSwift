@@ -8,23 +8,9 @@
 
 import Foundation
 
-func retreiveWinningPath (goalNode: SearchNode, startState: Board, inout winningMoves: Int[]) {
-
-    if let lastMove = goalNode.lastMoveIndex {
-        if let parent = goalNode.parent {
-            winningMoves.append(lastMove)
-            retreiveWinningPath(parent, startState, &winningMoves)
-        }
-    } else {
-        // end of the line
-        winningMoves = winningMoves.reverse()
-    }
-}
-
-func bfs (startState: Board, goalState: Board, successorFunction: (board: Board) -> SearchNode[]) -> Int[] {
+func bfs (startState: Board, goalState: Board, successorFunction: SuccessorFunctionType) -> Int[] {
     var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil)]
     var closedList: SearchNode[] = []
-    var currentNode: SearchNode?
     var daughters: SearchNode[] = []
     var winningPath: Int[] = []
     
@@ -42,7 +28,7 @@ func bfs (startState: Board, goalState: Board, successorFunction: (board: Board)
         if currentNode.board == goalState {
             // we've found the goal state
             
-            retreiveWinningPath(currentNode, startState, &winningPath)
+            traceSolution(currentNode, startState, &winningPath)
             break
         }
         

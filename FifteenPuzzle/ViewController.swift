@@ -75,27 +75,30 @@ class ViewController: UIViewController {
     }
     
     @IBAction func solveButtonPressed (sender : UIButton) {
-        shufflingOrSolving = true
-        
-        clearOldSuggestedPieceView()
+//        shufflingOrSolving = true
+//        
+//        clearOldSuggestedPieceView()
+//        
+//        let goalState = Board(rows: 4, columns: 4)
+//        var hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+//        hud.labelText = "Solving"
+//        var searchQueue = dispatch_queue_create("searchQueue", nil)
+//        dispatch_async(searchQueue) {
+//            var winningPath = bfs(self.boardGame, goalState, successorFunction)
+//            dispatch_async(dispatch_get_main_queue()) {
+//                if winningPath.count > 0 {
+//                    UIView.animateWithDuration(0.25) {
+//                        self.lastSuggestedIndex = winningPath[0]
+//                        self.viewsForPieces[winningPath[0]].backgroundColor = UIColor.redColor()
+//                    }
+//                    self.shufflingOrSolving = false
+//                }
+//                hud.hide(true)
+//            }
+//        }
         
         let goalState = Board(rows: 4, columns: 4)
-        var hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
-        hud.labelText = "Solving"
-        var searchQueue = dispatch_queue_create("searchQueue", nil)
-        dispatch_async(searchQueue) {
-            var winningPath = bfs(self.boardGame, goalState, successorFunction)
-            dispatch_async(dispatch_get_main_queue()) {
-                if winningPath.count > 0 {
-                    UIView.animateWithDuration(0.25) {
-                        self.lastSuggestedIndex = winningPath[0]
-                        self.viewsForPieces[winningPath[0]].backgroundColor = UIColor.redColor()
-                    }
-                    self.shufflingOrSolving = false
-                }
-                hud.hide(true)
-            }
-        }
+        aStar(boardGame, goalState, straightLightDistanceHeuristic, successorFunction)
     }
     
     func clearOldSuggestedPieceView () {
