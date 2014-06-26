@@ -79,12 +79,15 @@ class ViewController: UIViewController {
         let goalState = Board(rows: 4, columns: 4)
         
         var searchQueue = dispatch_queue_create("searchQueue", nil)
-        var winningPath = bfs(self.boardGame, goalState, successorFunction)
-        if winningPath.count > 0 {
-            self.viewsForPieces[winningPath[0]].backgroundColor = UIColor.redColor()
+        dispatch_async(searchQueue) {
+            var winningPath = bfs(self.boardGame, goalState, successorFunction)
+            if winningPath.count > 0 {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.viewsForPieces[winningPath[0]].backgroundColor = UIColor.redColor()
+                    self.shufflingOrSolving = false
+                }
+            }
         }
-        
-        shufflingOrSolving = false
     }
     
     func gameWon () {

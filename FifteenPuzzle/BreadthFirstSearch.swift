@@ -59,7 +59,7 @@ func bfs (startState: Board, goalState: Board, successorFunction: (board: Board)
     while true {
         if openList.isEmpty {
             // if open is empty and we haven't found a goal then failure
-            println("No path found")
+            println("Error: No path found")
             break
         }
         
@@ -70,7 +70,6 @@ func bfs (startState: Board, goalState: Board, successorFunction: (board: Board)
             // we've found the goal state
             
             retreiveWinningPath(currentNode, startState, &winningPath)
-            println("Winning Moves are \(winningPath)")
             break
         }
         
