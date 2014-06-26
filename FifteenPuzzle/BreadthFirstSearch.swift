@@ -11,6 +11,8 @@ import Foundation
 class BFSNode: Printable {
     var board: Board
     var lastMoveIndex: Int?
+    var children: BFSNode[] = []
+    var parent: BFSNode?
     
     init (board: Board, lastMoveIndex: Int?) {
         self.board = board
@@ -33,19 +35,31 @@ class BFSNode: Printable {
     }
 }
 
-func bfs (startState: Board, goalState: Board, successorFunction: (board: Board) -> BFSNode[]) -> Int[]? {
+func retreiveWinningPath (goalNode: BFSNode, startState: Board, inout winningMoves: Int[]) {
+
+    if let lastMove = goalNode.lastMoveIndex {
+        if let parent = goalNode.parent {
+            winningMoves.append(lastMove)
+            retreiveWinningPath(parent, startState, &winningMoves)
+        } else {
+            // end of the line
+        }
+    }
+}
+
+func bfs (startState: Board, goalState: Board, successorFunction: (board: Board) -> BFSNode[]) -> Int[] {
     var openList: BFSNode[] = [BFSNode(board: startState, lastMoveIndex: nil)]
     var closedList: BFSNode[] = []
     var currentNode: BFSNode?
     var daughters: BFSNode[] = []
-    var winningPath: Int[]?
+    var winningPath: Int[] = []
     
     // begin the loop
     while true {
         if openList.isEmpty {
             // if open is empty and we haven't found a goal then failure
             println("No path found")
-            return nil
+            break
         }
         
         let currentNode = openList.removeAtIndex(0) // get the next node in the open list
@@ -54,7 +68,8 @@ func bfs (startState: Board, goalState: Board, successorFunction: (board: Board)
         if currentNode.board == goalState {
             // we've found the goal state
             
-            println("Found goal in \(closedList.count) moves")
+            retreiveWinningPath(currentNode, startState, &winningPath)
+            println("Winning Moves are \(winningPath.reverse())")
             break
         }
         
@@ -68,6 +83,11 @@ func bfs (startState: Board, goalState: Board, successorFunction: (board: Board)
         
         daughters = daughters.filter {
             !$0.isInList(closedList)
+        }
+        
+        for eachNode in daughters {
+            currentNode.children.append(eachNode)
+            eachNode.parent = currentNode
         }
         
         openList += daughters // append new daughters to the end of open list
