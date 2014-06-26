@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3CB6BC6A31334905BF4E3BDC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9513932B1ACC46389C902F84 /* libPods.a */; };
 		40249818195A460800BD7854 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40249817195A460800BD7854 /* AppDelegate.swift */; };
 		4024981A195A460800BD7854 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40249819195A460800BD7854 /* ViewController.swift */; };
 		4024981D195A460800BD7854 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4024981B195A460800BD7854 /* Main.storyboard */; };
@@ -40,6 +41,9 @@
 		40249834195A465600BD7854 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		40249838195A4C1400BD7854 /* PieceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
 		4065795D195B4DF2006F3F1D /* BreadthFirstSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadthFirstSearch.swift; sourceTree = "<group>"; };
+		408ADDFB195BBC040021E55D /* FifteenPuzzle-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FifteenPuzzle-Bridging-Header.h"; sourceTree = "<group>"; };
+		90CA449CEA8841A1A4F2DB9B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		9513932B1ACC46389C902F84 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CB6BC6A31334905BF4E3BDC /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +71,8 @@
 				40249814195A460800BD7854 /* FifteenPuzzle */,
 				40249827195A460800BD7854 /* FifteenPuzzleTests */,
 				40249813195A460800BD7854 /* Products */,
+				90CA449CEA8841A1A4F2DB9B /* Pods.xcconfig */,
+				7A38F152131341A6AA214234 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +103,7 @@
 		40249815195A460800BD7854 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				408ADDFB195BBC040021E55D /* FifteenPuzzle-Bridging-Header.h */,
 				40249816195A460800BD7854 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -118,6 +126,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		7A38F152131341A6AA214234 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9513932B1ACC46389C902F84 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -125,9 +141,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4024982E195A460800BD7854 /* Build configuration list for PBXNativeTarget "FifteenPuzzle" */;
 			buildPhases = (
+				788D0683026842C38942D1B9 /* Check Pods Manifest.lock */,
 				4024980E195A460800BD7854 /* Sources */,
 				4024980F195A460800BD7854 /* Frameworks */,
 				40249810195A460800BD7854 /* Resources */,
+				71890F7FA01444198212C7FB /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -211,6 +229,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		71890F7FA01444198212C7FB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		788D0683026842C38942D1B9 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4024980E195A460800BD7854 /* Sources */ = {
@@ -334,23 +385,27 @@
 		};
 		4024982F195A460800BD7854 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90CA449CEA8841A1A4F2DB9B /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = FifteenPuzzle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FifteenPuzzle/FifteenPuzzle-Bridging-Header.h";
 			};
 			name = Debug;
 		};
 		40249830195A460800BD7854 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90CA449CEA8841A1A4F2DB9B /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = FifteenPuzzle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FifteenPuzzle/FifteenPuzzle-Bridging-Header.h";
 			};
 			name = Release;
 		};
