@@ -75,8 +75,14 @@ class ViewController: UIViewController {
     
     @IBAction func solveButtonPressed(sender : UIButton) {
         shufflingOrSolving = true
+        
         let goalState = Board(rows: 4, columns: 4)
-        bfs(boardGame, goalState, successorFunction)
+        
+        var searchQueue = dispatch_queue_create("searchQueue", nil)
+        var winningPath = bfs(self.boardGame, goalState, successorFunction)
+        if winningPath.count > 0 {
+            self.viewsForPieces[winningPath[0]].backgroundColor = UIColor.redColor()
+        }
         
         shufflingOrSolving = false
     }
@@ -121,6 +127,10 @@ class ViewController: UIViewController {
         var newFrame = getFrameForPiece(toCoordinate.x, row: toCoordinate.y)
         UIView.animateWithDuration(0.25) {
             pieceView.frame = newFrame;
+            
+            if pieceView.backgroundColor == UIColor.redColor() {
+                pieceView.backgroundColor = UIColor.greenColor()
+            }
         }
     }
     

@@ -41,9 +41,10 @@ func retreiveWinningPath (goalNode: BFSNode, startState: Board, inout winningMov
         if let parent = goalNode.parent {
             winningMoves.append(lastMove)
             retreiveWinningPath(parent, startState, &winningMoves)
-        } else {
-            // end of the line
         }
+    } else {
+        // end of the line
+        winningMoves = winningMoves.reverse()
     }
 }
 
@@ -69,7 +70,7 @@ func bfs (startState: Board, goalState: Board, successorFunction: (board: Board)
             // we've found the goal state
             
             retreiveWinningPath(currentNode, startState, &winningPath)
-            println("Winning Moves are \(winningPath.reverse())")
+            println("Winning Moves are \(winningPath)")
             break
         }
         
