@@ -16,6 +16,8 @@
 		40249835195A465600BD7854 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40249834195A465600BD7854 /* Board.swift */; };
 		40249839195A4C1400BD7854 /* PieceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40249838195A4C1400BD7854 /* PieceView.swift */; };
 		4065795E195B4DF2006F3F1D /* BreadthFirstSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4065795D195B4DF2006F3F1D /* BreadthFirstSearch.swift */; };
+		408ADDFD195BCAA10021E55D /* AStarSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408ADDFC195BCAA10021E55D /* AStarSearch.swift */; };
+		408ADDFF195BCC930021E55D /* SearchNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408ADDFE195BCC930021E55D /* SearchNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		40249838195A4C1400BD7854 /* PieceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
 		4065795D195B4DF2006F3F1D /* BreadthFirstSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadthFirstSearch.swift; sourceTree = "<group>"; };
 		408ADDFB195BBC040021E55D /* FifteenPuzzle-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FifteenPuzzle-Bridging-Header.h"; sourceTree = "<group>"; };
+		408ADDFC195BCAA10021E55D /* AStarSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AStarSearch.swift; sourceTree = "<group>"; };
+		408ADDFE195BCC930021E55D /* SearchNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchNode.swift; sourceTree = "<group>"; };
 		90CA449CEA8841A1A4F2DB9B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		9513932B1ACC46389C902F84 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -88,7 +92,9 @@
 		40249814195A460800BD7854 /* FifteenPuzzle */ = {
 			isa = PBXGroup;
 			children = (
+				408ADDFE195BCC930021E55D /* SearchNode.swift */,
 				4065795D195B4DF2006F3F1D /* BreadthFirstSearch.swift */,
+				408ADDFC195BCAA10021E55D /* AStarSearch.swift */,
 				40249834195A465600BD7854 /* Board.swift */,
 				40249838195A4C1400BD7854 /* PieceView.swift */,
 				40249819195A460800BD7854 /* ViewController.swift */,
@@ -269,10 +275,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4024981A195A460800BD7854 /* ViewController.swift in Sources */,
+				408ADDFF195BCC930021E55D /* SearchNode.swift in Sources */,
 				40249818195A460800BD7854 /* AppDelegate.swift in Sources */,
 				4065795E195B4DF2006F3F1D /* BreadthFirstSearch.swift in Sources */,
 				40249835195A465600BD7854 /* Board.swift in Sources */,
 				40249839195A4C1400BD7854 /* PieceView.swift in Sources */,
+				408ADDFD195BCAA10021E55D /* AStarSearch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

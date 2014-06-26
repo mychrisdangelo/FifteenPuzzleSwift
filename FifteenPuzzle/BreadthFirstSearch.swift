@@ -8,34 +8,7 @@
 
 import Foundation
 
-class BFSNode: Printable {
-    var board: Board
-    var lastMoveIndex: Int?
-    var children: BFSNode[] = []
-    var parent: BFSNode?
-    
-    init (board: Board, lastMoveIndex: Int?) {
-        self.board = board
-        self.lastMoveIndex = lastMoveIndex
-    }
-    
-    func isInList (list: BFSNode[]) -> Bool {
-        for eachNode in list {
-            let thisBoard = eachNode.board
-            if thisBoard == board {
-                return true
-            }
-        }
-        
-        return false
-    }
-    
-    var description: String {
-    return "(board = \(board), lastMoveIndex = \(lastMoveIndex))"
-    }
-}
-
-func retreiveWinningPath (goalNode: BFSNode, startState: Board, inout winningMoves: Int[]) {
+func retreiveWinningPath (goalNode: SearchNode, startState: Board, inout winningMoves: Int[]) {
 
     if let lastMove = goalNode.lastMoveIndex {
         if let parent = goalNode.parent {
@@ -48,11 +21,11 @@ func retreiveWinningPath (goalNode: BFSNode, startState: Board, inout winningMov
     }
 }
 
-func bfs (startState: Board, goalState: Board, successorFunction: (board: Board) -> BFSNode[]) -> Int[] {
-    var openList: BFSNode[] = [BFSNode(board: startState, lastMoveIndex: nil)]
-    var closedList: BFSNode[] = []
-    var currentNode: BFSNode?
-    var daughters: BFSNode[] = []
+func bfs (startState: Board, goalState: Board, successorFunction: (board: Board) -> SearchNode[]) -> Int[] {
+    var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil)]
+    var closedList: SearchNode[] = []
+    var currentNode: SearchNode?
+    var daughters: SearchNode[] = []
     var winningPath: Int[] = []
     
     // begin the loop
@@ -96,14 +69,14 @@ func bfs (startState: Board, goalState: Board, successorFunction: (board: Board)
     return winningPath
 }
 
-func successorFunction (board: Board) -> BFSNode[] {
+func successorFunction (board: Board) -> SearchNode[] {
     var indexThatCanMove = board.indexesThatCanMove()
-    var childBoardsWithMoves = BFSNode[]()
+    var childBoardsWithMoves = SearchNode[]()
     
     for index in indexThatCanMove {
         let childBoard = Board(board: board) // make copy of board
         childBoard.movePiece(index) // mutates board
-        childBoardsWithMoves.append(BFSNode(board: childBoard, lastMoveIndex: index))
+        childBoardsWithMoves.append(SearchNode(board: childBoard, lastMoveIndex: index))
     }
     
     return childBoardsWithMoves

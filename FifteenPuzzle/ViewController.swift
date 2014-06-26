@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     let pieceBuffer: CGFloat = 2.0
     var viewsForPieces: PieceView[] = []
     var shufflingOrSolving = false
+    var lastSuggestedIndex: Int?
     
     init(coder aDecoder: NSCoder!)  {
         super.init(coder: aDecoder)
@@ -73,8 +74,10 @@ class ViewController: UIViewController {
         shufflingOrSolving = false
     }
     
-    @IBAction func solveButtonPressed(sender : UIButton) {
+    @IBAction func solveButtonPressed (sender : UIButton) {
         shufflingOrSolving = true
+        
+        clearOldSuggestedPieceView()
         
         let goalState = Board(rows: 4, columns: 4)
         var hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
@@ -85,12 +88,19 @@ class ViewController: UIViewController {
             dispatch_async(dispatch_get_main_queue()) {
                 if winningPath.count > 0 {
                     UIView.animateWithDuration(0.25) {
+                        self.lastSuggestedIndex = winningPath[0]
                         self.viewsForPieces[winningPath[0]].backgroundColor = UIColor.redColor()
                     }
                     self.shufflingOrSolving = false
                 }
                 hud.hide(true)
             }
+        }
+    }
+    
+    func clearOldSuggestedPieceView () {
+        if let oldSuggestedIndex = self.lastSuggestedIndex {
+            self.viewsForPieces[oldSuggestedIndex].backgroundColor = UIColor.greenColor()
         }
     }
     
@@ -133,11 +143,9 @@ class ViewController: UIViewController {
         // animate square moving to new location
         var newFrame = getFrameForPiece(toCoordinate.x, row: toCoordinate.y)
         UIView.animateWithDuration(0.25) {
-            pieceView.frame = newFrame;
+            pieceView.frame = newFrame
             
-            if pieceView.backgroundColor == UIColor.redColor() {
-                pieceView.backgroundColor = UIColor.greenColor()
-            }
+            self.clearOldSuggestedPieceView()
         }
     }
     
