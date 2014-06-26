@@ -69,15 +69,3 @@ func bfs (startState: Board, goalState: Board, successorFunction: (board: Board)
     return winningPath
 }
 
-func successorFunction (board: Board) -> SearchNode[] {
-    var indexThatCanMove = board.indexesThatCanMove()
-    var childBoardsWithMoves = SearchNode[]()
-    
-    for index in indexThatCanMove {
-        let childBoard = Board(board: board) // make copy of board
-        childBoard.movePiece(index) // mutates board
-        childBoardsWithMoves.append(SearchNode(board: childBoard, lastMoveIndex: index))
-    }
-    
-    return childBoardsWithMoves
-}

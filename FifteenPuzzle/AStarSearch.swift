@@ -38,18 +38,13 @@ import Foundation
 //;;;  5. Go to 2
 //;;;
 
-func aStar (startState: Board, goalState: Board, heuristicFunction: (Board, Board) -> Int) {
-    var heuristicValue = heuristicFunction(startState, goalState)
+func aStar (startState: Board, goalState: Board, heuristicFunction: (theState: Board) -> Double) {
+    var heuristicValue = heuristicFunction(theState: startState)
     var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil, heuristicValue: heuristicValue)]
     var closedList: SearchNode[] = []
     var currentNode: SearchNode?
     var daughters: SearchNode[] = []
     var winningPath: Int[] = []
-}
-
-
-func successorFunction (theState: Board, goalState: Board) -> Int {
-    return -1
 }
 
 func straightLineDistance (index: Int, theState: Board) -> Double {
@@ -71,11 +66,7 @@ func straightLightDistanceHeuristic (theState: Board) -> Double {
     
     for (index, _) in enumerate(theState.pieces) {
         let sld = straightLineDistance(index, theState)
-        straightLineDistances.append(sld)
-    }
-    
-    straightLineDistances.map {
-        sum += $0
+        sum += sld
     }
     
     return sum
