@@ -9,7 +9,7 @@
 import Foundation
 
 func bfs (startState: Board, goalState: Board, successorFunction: SuccessorFunctionType) -> Int[] {
-    var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil)]
+    var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil, heuristicValue: nil, costValue: nil)]
     var closedList: SearchNode[] = []
     var daughters: SearchNode[] = []
     var winningPath: Int[] = []
@@ -34,8 +34,9 @@ func bfs (startState: Board, goalState: Board, successorFunction: SuccessorFunct
         
         // get all possibilities and then filter out the daughters that have already been
         // examined or are planning to be examined
-        var daughters = successorFunction(currentNode: currentNode)
+        var daughters = successorFunction(currentNode: currentNode, nil)
         
+        // TODO: change isInlist to O(1) lookup
         daughters = daughters.filter {
             !$0.isInList(openList)
         }

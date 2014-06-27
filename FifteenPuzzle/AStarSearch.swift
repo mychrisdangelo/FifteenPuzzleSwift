@@ -40,7 +40,7 @@ import Foundation
 
 func aStar (startState: Board, goalState: Board, heuristicFunction: HeuristicFunctionType, successorFunction: SuccessorFunctionType) {
     var heuristicValue = heuristicFunction(theState: startState)
-    var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil, heuristicValue: heuristicValue)] // TODO: perhaps this should be sorting whenever get is called
+    var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil, heuristicValue: heuristicValue, costValue: 0)] // TODO: perhaps this should be sorting whenever get is called
     var closedList: SearchNode[] = []
     var daughters: SearchNode[] = []
     var winningPath: Int[] = []
@@ -66,8 +66,9 @@ func aStar (startState: Board, goalState: Board, heuristicFunction: HeuristicFun
 
         // get all possibilities and then filter out the daughters that have already been
         // examined or are planning to be examined
-        var daughters = successorFunction(currentNode: currentNode)
+        var daughters = successorFunction(currentNode: currentNode, heuristicFunction: heuristicFunction)
         
+        // TODO: change isInlist to O(1) lookup
         daughters = daughters.filter {
             !$0.isInList(openList)
         }

@@ -16,7 +16,7 @@ class SearchNode: Printable {
     var heuristicValue: Double?
     var costValue: Double?
     
-    init (board: Board, lastMoveIndex: Int?, heuristicValue: Double = 0, costValue: Double = 0) {
+    init (board: Board, lastMoveIndex: Int?, heuristicValue: Double?, costValue: Double?) {
         self.board = board
         self.lastMoveIndex = lastMoveIndex
         self.heuristicValue = heuristicValue
@@ -39,9 +39,9 @@ class SearchNode: Printable {
     }
 }
 
-typealias SuccessorFunctionType = (currentNode: SearchNode) -> SearchNode[]
+typealias SuccessorFunctionType = (currentNode: SearchNode, heuristicFunction: HeuristicFunctionType?) -> SearchNode[]
 
-func successorFunction (currentNode: SearchNode) -> SearchNode[] {
+func successorFunction (currentNode: SearchNode, heuristicFunction: HeuristicFunctionType?) -> SearchNode[] {
     var indexThatCanMove = currentNode.board.indexesThatCanMove()
     var childBoardsWithMoves = SearchNode[]()
     
@@ -49,8 +49,12 @@ func successorFunction (currentNode: SearchNode) -> SearchNode[] {
         let childBoard = Board(board: currentNode.board) // make copy of board
         childBoard.movePiece(index) // mutates board
         let costOfMove = cost(currentNode.board, childBoard)
+        var heuristicValue: Double?
+        if let heuristicFunctionUnwrapped = heuristicFunction {
+            heuristicValue = heuristicFunctionUnwrapped(theState: currentNode.board)
+        }
         
-        childBoardsWithMoves.append(SearchNode(board: childBoard, lastMoveIndex: index, costValue: costOfMove))
+        childBoardsWithMoves.append(SearchNode(board: childBoard, lastMoveIndex: index, heuristicValue: heuristicValue, costValue: costOfMove))
     }
     
     return childBoardsWithMoves
