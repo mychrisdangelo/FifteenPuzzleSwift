@@ -85,15 +85,26 @@ class ViewController: UIViewController {
         hud.labelText = "Solving"
         var searchQueue = dispatch_queue_create("searchQueue", nil)
         dispatch_async(searchQueue) {
-            var winningPath = aStar(self.boardGame, goalState, straightLightDistanceHeuristic, successorFunction) // bfs(self.boardGame, goalState, successorFunction)
+            var winningPath: Int[]?
+            switch self.settings.savedSearchSetting {
+            case .AStar:
+                    winningPath = aStar(self.boardGame, goalState, straightLightDistanceHeuristic, successorFunction)
+            case .BreadthFirstSearch:
+                    winningPath = bfs(self.boardGame, goalState, successorFunction)
+            default:
+                println("Error: unexpected case")
+            }
             dispatch_async(dispatch_get_main_queue()) {
-                if winningPath.count > 0 {
-                    UIView.animateWithDuration(0.25) {
-                        self.lastSuggestedIndex = winningPath[0]
-                        self.viewsForPieces[winningPath[0]].backgroundColor = UIColor.redColor()
+                if let unwrappedWinningPath = winningPath {
+                    if unwrappedWinningPath.count > 0 {
+                        UIView.animateWithDuration(0.25) {
+                            self.lastSuggestedIndex = unwrappedWinningPath[0]
+                            self.viewsForPieces[unwrappedWinningPath[0]].backgroundColor = UIColor.redColor()
+                        }
+                        self.shufflingOrSolving = false
                     }
-                    self.shufflingOrSolving = false
                 }
+                
                 hud.hide(true)
             }
         }

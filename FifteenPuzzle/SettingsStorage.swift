@@ -17,7 +17,7 @@ enum Settings: Int {
         case .BreadthFirstSearch:
             return "Breadth First Search"
         case .AStar:
-            return "A*"
+            return "A* (Implementation in Progress)"
         default:
             return String(self.toRaw())
         }
@@ -28,6 +28,7 @@ class SettingsStorage {
     
     let savedSearchSettingKey = "savedSearchSettingKey"
     
+    // TODO: change this so that this class only writes/reads from NSUserDefaults on alloc and dealloc
     var savedSearchSetting: Settings {
     get {
         if let rawValue = NSUserDefaults.standardUserDefaults().objectForKey(savedSearchSettingKey) as? Int {
