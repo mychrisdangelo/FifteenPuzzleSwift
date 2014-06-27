@@ -8,21 +8,16 @@
 
 import UIKit
 
-enum Settings: Int {
-    case BreadthFirstSearch = 0, AStar
-    case ShuffleAmount
-    case Count
-    
-    func description() -> String {
+// note: unused but useful use of extensions
+extension UITableViewCellAccessoryType {
+    func toggleCheckmark() -> UITableViewCellAccessoryType {
         switch self {
-        case .BreadthFirstSearch:
-            return "Breadth First Search"
-        case .AStar:
-            return "A*"
-        case .ShuffleAmount:
-            return "Number of Moves to Shuffle"
+        case .Checkmark:
+            return .None
+        case .None:
+            return .Checkmark
         default:
-            return String(self.toRaw())
+            return .None
         }
     }
 }
@@ -30,6 +25,7 @@ enum Settings: Int {
 class SettingsViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet var tableView : UITableView
+    var savedSettings: SettingsStorage!
     
     init(coder aDecoder: NSCoder!) {
         super.init(coder: aDecoder)
@@ -39,6 +35,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
 
         self.title = "Settings"
+        
+        assert(savedSettings != nil) // savedSettings must be set before this controller is loaded onscreen
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,7 +52,51 @@ class SettingsViewController: UIViewController, UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier("Settings Cell", forIndexPath: indexPath) as UITableViewCell
         cell.textLabel.text = Settings.fromRaw(indexPath.row)?.description()
         
+        if let currentSetting = Settings.fromRaw(indexPath.row) {
+            switch currentSetting {
+            case .BreadthFirstSearch, .AStar:
+                cell.accessoryType = (currentSetting == savedSettings.savedSearchSetting) ? UITableViewCellAccessoryType.Checkmark : UITableViewCellAccessoryType.None
+                cell.selectionStyle = UITableViewCellSelectionStyle.Default
+            default:
+                break // ie. do nothing
+        }
+        }
+
         return cell
+    }
+    
+    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if let currentSetting = Settings.fromRaw(indexPath.row) {
+            switch currentSetting {
+            case .BreadthFirstSearch, .AStar:
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                deselectOtherSettings(currentSetting, tableView: tableView)
+            default:
+                break
+            }
+            
+            savedSettings.savedSearchSetting = currentSetting
+        }
+    }
+    
+    func deselectOtherSettings(currentSetting: Settings, tableView: UITableView) {
+        for rawValue in 0..Settings.Count.toRaw() {
+            if let eachSetting = Settings.fromRaw(rawValue) {
+                switch eachSetting {
+                case .BreadthFirstSearch, .AStar:
+                    if currentSetting != eachSetting {
+                        let indexPath = NSIndexPath(forRow: rawValue, inSection: 0)
+                        let cell = tableView.cellForRowAtIndexPath(indexPath)
+                        cell.accessoryType = UITableViewCellAccessoryType.None
+                    }
+                default:
+                    break
+                }
+            }
+        }
     }
 
 }

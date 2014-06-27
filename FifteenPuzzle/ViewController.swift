@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     var viewsForPieces: PieceView[] = []
     var shufflingOrSolving = false
     var lastSuggestedIndex: Int?
+    var settings = SettingsStorage()
     
     init(coder aDecoder: NSCoder!)  {
         super.init(coder: aDecoder)
@@ -180,6 +181,14 @@ class ViewController: UIViewController {
         }
         
         return peiceViews
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+        if segue.identifier == "Show Settings" {
+            if let settingsViewController = segue.destinationViewController as? SettingsViewController {
+                settingsViewController.savedSettings = settings
+            }
+        }
     }
 
 }
