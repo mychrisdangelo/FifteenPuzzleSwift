@@ -38,7 +38,7 @@ import Foundation
 //;;;  5. Go to 2
 //;;;
 
-func aStar (startState: Board, goalState: Board, heuristicFunction: HeuristicFunctionType, successorFunction: SuccessorFunctionType) {
+func aStar (startState: Board, goalState: Board, heuristicFunction: HeuristicFunctionType, successorFunction: SuccessorFunctionType) -> Int[] {
     var heuristicValue = heuristicFunction(theState: startState)
     var openList: SearchNode[] = [SearchNode(board: startState, lastMoveIndex: nil, heuristicValue: heuristicValue, costValue: 0)] // TODO: perhaps this should be sorting whenever get is called
     var closedList: SearchNode[] = []
@@ -68,20 +68,65 @@ func aStar (startState: Board, goalState: Board, heuristicFunction: HeuristicFun
         // examined or are planning to be examined
         var daughters = successorFunction(currentNode: currentNode, heuristicFunction: heuristicFunction)
         
-        // TODO: change isInlist to O(1) lookup
-        daughters = daughters.filter {
-            !$0.isInList(openList)
+        var daughtersInOpenList = daughters.filter {
+            $0.isInList(openList)
         }
         
-        daughters = daughters.filter {
-            !$0.isInList(closedList)
+        var daughtersInClosedList = daughters.filter {
+            $0.isInList(closedList)
         }
         
+        var daughtersNewToBothLists = daughters.filter {
+            !$0.isInList(openList) && !$0.isInList(closedList)
+        }
+        openList += daughtersNewToBothLists
         
+        updateOpenListWithBetterDaughters(daughtersInOpenList, &openList)
+        updateClosedListWithBetterDaughters(daughtersInClosedList, &openList, &closedList)
+        
+        openList.sort {
+            (aNode: SearchNode, bNode: SearchNode) -> Bool in
+            let aActualWithEstimatedCost = aNode.costValue! + aNode.heuristicValue!
+            let bActualWithEstimatedCost = bNode.costValue! + bNode.heuristicValue!
+            
+            return aActualWithEstimatedCost < bActualWithEstimatedCost
+        }
+    }
+    
+    return winningPath
+}
+
+func updateOpenListWithBetterDaughters(daughters: SearchNode[], inout openList: SearchNode[])  {
+    for eachDaughter in daughters {
+        for (index, openNode) in enumerate(openList) {
+            if eachDaughter.board == openNode.board {
+                // if they match keep the node that has a better cost to get to this state
+                if eachDaughter.costValue < openNode.costValue {
+                    openList[index] = eachDaughter
+                }
+
+                break // there should only be one matching node so we're done
+            }
+        }
     }
 }
 
-//func update (daughters: SearchNode[], openList: SearchNode[], heuristicFunction
+func updateClosedListWithBetterDaughters(daughters: SearchNode[], inout openList: SearchNode[], inout closedList: SearchNode[])  {
+    for eachDaughter in daughters {
+        for (index, closedNode) in enumerate(closedList) {
+            if eachDaughter.board == closedNode.board {
+                // if they match keep the node that has a better cost to get to this state.
+                // remove it from the closed list and put it into the open list
+                if eachDaughter.costValue! < closedNode.costValue! {
+                    openList.removeAtIndex(index)
+                    closedList.append(eachDaughter)
+                }
+                
+                break // there should only be one matching node so we're done
+            }
+        }
+    }
+}
 
 
 

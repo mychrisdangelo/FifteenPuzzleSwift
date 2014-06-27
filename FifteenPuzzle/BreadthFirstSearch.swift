@@ -38,16 +38,7 @@ func bfs (startState: Board, goalState: Board, successorFunction: SuccessorFunct
         
         // TODO: change isInlist to O(1) lookup
         daughters = daughters.filter {
-            !$0.isInList(openList)
-        }
-        
-        daughters = daughters.filter {
-            !$0.isInList(closedList)
-        }
-        
-        for eachNode in daughters {
-            currentNode.children.append(eachNode)
-            eachNode.parent = currentNode
+            !$0.isInList(openList) && !$0.isInList(closedList)
         }
         
         openList += daughters // append new daughters to the end of open list

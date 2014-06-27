@@ -12,7 +12,7 @@ class SearchNode: Printable {
     var board: Board
     var lastMoveIndex: Int?
     var children: SearchNode[] = []
-    var parent: SearchNode?
+    weak var parent: SearchNode? // TODO: MUST examine this relationship. There is a proper way to handle this (unowned?, optional?)
     var heuristicValue: Double?
     var costValue: Double?
     
@@ -43,7 +43,7 @@ typealias SuccessorFunctionType = (currentNode: SearchNode, heuristicFunction: H
 
 func successorFunction (currentNode: SearchNode, heuristicFunction: HeuristicFunctionType?) -> SearchNode[] {
     var indexThatCanMove = currentNode.board.indexesThatCanMove()
-    var childBoardsWithMoves = SearchNode[]()
+    var successorNodes = SearchNode[]()
     
     for index in indexThatCanMove {
         let childBoard = Board(board: currentNode.board) // make copy of board
@@ -54,10 +54,14 @@ func successorFunction (currentNode: SearchNode, heuristicFunction: HeuristicFun
             heuristicValue = heuristicFunctionUnwrapped(theState: currentNode.board)
         }
         
-        childBoardsWithMoves.append(SearchNode(board: childBoard, lastMoveIndex: index, heuristicValue: heuristicValue, costValue: costOfMove))
+        let childNode = SearchNode(board: childBoard, lastMoveIndex: index, heuristicValue: heuristicValue, costValue: costOfMove)
+        childNode.parent = currentNode
+        currentNode.children.append(childNode)
+        
+        successorNodes.append(childNode)
     }
     
-    return childBoardsWithMoves
+    return successorNodes
 }
 
 func cost (currentState: Board, nextState: Board) -> Double {
@@ -95,9 +99,6 @@ func straightLightDistanceHeuristic (theState: Board) -> Double {
 func straightLineDistance (index: Int, theState: Board) -> Double {
     let coordinateOfIndex = theState.indexToCoordinate(index)
     let coordinateOfGoal = theState.indexToCoordinate(theState.pieces[index].winningIndex)
-    
-    println(coordinateOfIndex)
-    println(coordinateOfGoal)
     
     let xDistance = abs(coordinateOfIndex.x - coordinateOfGoal.x)
     let yDistance = abs(coordinateOfGoal.y - coordinateOfGoal.y)
