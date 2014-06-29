@@ -92,7 +92,7 @@ class ViewController: UIViewController {
             case .BreadthFirstSearch:
                     winningPath = bfs(self.boardGame, goalState, successorFunction)
             default:
-                println("Error: unexpected case")
+                println("Error: unexpected case (file: \(__FILE__), function: \(__FUNCTION__), line: \(__LINE__))")
             }
             dispatch_async(dispatch_get_main_queue()) {
                 if let unwrappedWinningPath = winningPath {
