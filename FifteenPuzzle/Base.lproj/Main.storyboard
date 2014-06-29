@@ -53,7 +53,6 @@
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="C2h-a4-FLa" secondAttribute="bottom" constant="20" id="xt1-Yw-Mic"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="StU-yF-64o" secondAttribute="bottom" constant="20" id="zpf-XJ-qST"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="15 Puzzle" id="DyP-hG-TP3"/>
                 </viewController>
@@ -106,7 +105,6 @@
                             <constraint firstItem="SH0-HV-DXI" firstAttribute="top" secondItem="1Nb-Ta-1RB" secondAttribute="top" id="biL-6K-GJU"/>
                             <constraint firstAttribute="trailing" secondItem="SH0-HV-DXI" secondAttribute="trailing" id="fzg-2V-pJp"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="SH0-HV-DXI" id="nmT-Q3-qrR"/>

@@ -23,6 +23,8 @@ class SearchNode: Printable {
         self.costValue = costValue
     }
     
+    /// Iterates through the list array O(N)
+    /// This is an example of writing a documentation comment
     func isInList (list: SearchNode[]) -> Bool {
         for eachNode in list {
             let thisBoard = eachNode.board

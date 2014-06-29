@@ -126,12 +126,6 @@ class ViewController: UIViewController {
         }
     }
     
-    func swapPieceViews(inout a: PieceView, inout _ b: PieceView) {
-        var tmp = a
-        a = b
-        b = tmp
-    }
-    
     func movePieceViewWithIndex (index: Int) {
         let pieceView = viewsForPieces[index]
         
@@ -140,7 +134,7 @@ class ViewController: UIViewController {
             let destinationIndex = boardGame.coordinateToIndex(toCoordinate)
             pieceView.tag = destinationIndex
             
-            swapPieceViews(&viewsForPieces[destinationIndex], &viewsForPieces[index])
+            swap(&viewsForPieces[destinationIndex], &viewsForPieces[index])
         }
     }
     

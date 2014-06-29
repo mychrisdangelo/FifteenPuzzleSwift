@@ -159,12 +159,6 @@ class Board: Printable {
         
         return positions;
     }
-  
-    func swapPieces (inout a: Piece, inout _ b: Piece) {
-        var tmp = a
-        a = b
-        b = tmp
-    }
     
     func movePiece (index: Int) -> Coordinate? {
         var possibleDestinations = availableMoves(index)
@@ -177,7 +171,7 @@ class Board: Printable {
                 let destinationIndex = empty
                 let oldIndex = index
 
-                swapPieces(&pieces[oldIndex], &pieces[destinationIndex])
+                swap(&pieces[oldIndex], &pieces[destinationIndex])
                 empty = oldIndex
                 
                 if pieces[destinationIndex].winningIndex == destinationIndex {
