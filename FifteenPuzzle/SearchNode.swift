@@ -12,7 +12,10 @@ class SearchNode: Printable {
     var board: Board
     var lastMoveIndex: Int?
     var children: SearchNode[] = []
-    weak var parent: SearchNode? // TODO: MUST examine this relationship. There is a proper way to handle this (unowned?, optional?)
+    // 'weak' reasoning: the child will stay around as long as the parent is around. 
+    // it is not always the case that a SearchNode has a parent. Example if the 
+    // startState is the same as the goalState
+    weak var parent: SearchNode?
     var heuristicValue: Double?
     var costValue: Double?
     
