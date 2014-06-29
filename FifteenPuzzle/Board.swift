@@ -26,11 +26,15 @@ struct Coordinate: Printable {
     }
 }
 
-@infix func != (lhs: Piece, rhs: Piece) -> Bool {
-    return !((lhs.pieceName == rhs.pieceName) && (lhs.winningIndex == rhs.winningIndex))
+@infix func == (lhs: Piece, rhs: Piece) -> Bool {
+    return ((lhs.pieceName == rhs.pieceName) && (lhs.winningIndex == rhs.winningIndex))
 }
 
-class Piece: Printable {
+@infix func != (lhs: Piece, rhs: Piece) -> Bool {
+    return !(lhs == rhs)
+}
+
+class Piece: Printable, Equatable {
     let pieceName: String
     let winningIndex: Int
     
@@ -43,6 +47,7 @@ class Piece: Printable {
     var description: String {
     return "Piece (name: \(pieceName))\n"
     }
+    
 }
 
 @infix func == (lhs: Board, rhs: Board) -> Bool {
